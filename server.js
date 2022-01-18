@@ -4,7 +4,7 @@ const uuidv1 = require("uuidv1");
 const express = require("express");
 const dbjson = require("./db/db.json");
 
-const PORT = process.env.PORT || 80;
+const PORT = process.env.PORT || 3001;
 const app = express();
 
 app.use(express.json());
