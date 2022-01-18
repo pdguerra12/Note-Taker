@@ -4,8 +4,8 @@ const uuidv1 = require("uuidv1");
 const express = require("express");
 const dbjson = require("./db/db.json");
 
-const app = express();
 const PORT = process.env.PORT || 3001;
+const app = express();
 
 app.use(express.json());
 app.use(express.static("public"));
@@ -64,5 +64,5 @@ app.delete("/api/notes/:id", function (req, res) {
 });
 
 app.listen(PORT, () => {
-	console.log(`API server is currently on port ${PORT}!`);
+	console.log(`API server now on port ${PORT}!`);
 });
