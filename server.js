@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const uuidv1 = require("uuid/dist/v1");
+const uuid = require("uuid");
 
 const express = require("express");
 const dbjson = require("./db/db.json");
@@ -31,7 +31,7 @@ app.post("/api/notes", (req, res) => {
 		"utf-8"
 	);
 	const notesParse = JSON.parse(notesData);
-	req.body.id = uuidv1();
+	req.body.id = uuid();
 	notesParse.push(req.body);
 
 	fs.writeFileSync(
