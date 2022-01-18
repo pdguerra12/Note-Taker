@@ -31,7 +31,7 @@ app.post("/api/notes", (req, res) => {
 		"utf-8"
 	);
 	const notesParse = JSON.parse(notesData);
-	// req.body.id = uuidv1();
+	req.body.id = notes.length.toString();
 	notesParse.push(req.body);
 
 	fs.writeFileSync(
