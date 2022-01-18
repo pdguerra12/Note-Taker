@@ -1,7 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-var uuid = require("uuid");
-const uuidv1 = require("uuid/v1");
+var uuidv1 = require("uuidv1");
 
 const express = require("express");
 const dbjson = require("./db/db.json");
