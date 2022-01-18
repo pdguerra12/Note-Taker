@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const uuidv1 = require("uuidv1");
 const express = require("express");
-// const dbjson = require('./db/db.json')
+const dbjson = require("./db/db.json");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -45,8 +45,24 @@ app.get("*", (req, res) => {
 	res.sendFile(path.join(__dirname, "./public/index.html"));
 });
 
-// app.delete("/api/notes/:id", function (req, res) {});
+app.delete("/api/notes/:id", function (req, res) {
+	let noteDelete = parseInt(req.params.id);
+
+	for (let i = 0; i < dbjson.length; i++) {
+		if (noteDelete === dbjson[i].id) {
+			dbjson.splice(i, 1);
+
+			let jsonNote = JSON.stringify(dbjson, null, 2);
+
+			fs.writeFile("./db/db.json", jsonNote, function (err) {
+				if (err) throw err;
+				console.log("Your note has been deleted!");
+				res.json(dbjson);
+			});
+		}
+	}
+});
 
 app.listen(PORT, () => {
-	console.log(`API server now on port ${PORT}!`);
+	console.log(`API server is currently on port ${PORT}!`);
 });
