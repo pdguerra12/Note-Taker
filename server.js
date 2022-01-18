@@ -1,9 +1,8 @@
 const fs = require("fs");
 const path = require("path");
-// var uuidv1 = require("uuidv1");
-
 const express = require("express");
-const dbjson = require("./db/db.json");
+const dbJson = require("./db/db.json");
+var uuidv1 = require("uuidv1");
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -17,29 +16,29 @@ app.get("/notes", (req, res) => {
 });
 
 app.get("/api/notes", (req, res) => {
-	const notesData = fs.readFileSync(
+	const dataNotes = fs.readFileSync(
 		path.join(__dirname, "./db/db.json"),
 		"utf-8"
 	);
-	const notesParse = JSON.parse(notesData);
-	res.json(notesParse);
+	const parseNotes = JSON.parse(dataNotes);
+	res.json(parseNotes);
 });
 
 app.post("/api/notes", (req, res) => {
-	const notesData = fs.readFileSync(
+	const dataNotes = fs.readFileSync(
 		path.join(__dirname, "./db/db.json"),
 		"utf-8"
 	);
-	const notesParse = JSON.parse(notesData);
-	req.body.id = notes.length.toString();
-	notesParse.push(req.body);
+	const parseNotes = JSON.parse(dataNotes);
+	req.body.id = uuidv1();
+	parseNotes.push(req.body);
 
 	fs.writeFileSync(
 		path.join(__dirname, "./db/db.json"),
-		JSON.stringify(notesParse),
+		JSON.stringify(parseNotes),
 		"utf-8"
 	);
-	res.json("You have added a note!");
+	res.json("You have successfully added a note!");
 });
 
 app.get("*", (req, res) => {
@@ -47,18 +46,21 @@ app.get("*", (req, res) => {
 });
 
 app.delete("/api/notes/:id", function (req, res) {
-	let noteDelete = parseInt(req.params.id);
+	console.log(uuidv1());
+	console.log("Req.params:", req.params);
+	let deletedNote = parseInt(req.params.id);
+	console.log(deletedNote);
 
-	for (let i = 0; i < dbjson.length; i++) {
-		if (noteDelete === dbjson[i].id) {
-			dbjson.splice(i, 1);
+	for (let i = 0; i < dbJson.length; i++) {
+		if (deletedNote === dbJson[i].id) {
+			dbJson.splice(i, 1);
 
-			let jsonNote = JSON.stringify(dbjson, null, 2);
-
-			fs.writeFile("./db/db.json", jsonNote, function (err) {
+			let noteJson = JSON.stringify(dbJson, null, 2);
+			console.log(noteJson);
+			fs.writeFile("./db/db.json", noteJson, function (err) {
 				if (err) throw err;
 				console.log("Your note has been deleted!");
-				res.json(dbjson);
+				res.json(dbJson);
 			});
 		}
 	}
